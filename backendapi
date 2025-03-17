@@ -1,0 +1,34 @@
+from flask import Flask, jsonify, request
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app)
+
+rides = []
+
+@app.route("/request_ride", methods=["POST"])
+def request_ride():
+    data = request.json
+    ride = {
+        "id": len(rides) + 1,
+        "pickup": data["pickup"],
+        "destination": data["destination"],
+        "status": "pending"
+    }
+    rides.append(ride)
+    return jsonify({"message": "Ride requested successfully", "ride": ride}), 201
+
+@app.route("/rides", methods=["GET"])
+def get_rides():
+    return jsonify(rides)
+
+@app.route("/confirm_ride/<int:ride_id>", methods=["POST"])
+def confirm_ride(ride_id):
+    for ride in rides:
+        if ride["id"] == ride_id:
+            ride["status"] = "confirmed"
+            return jsonify({"message": "Ride confirmed", "ride": ride})
+    return jsonify({"error": "Ride not found"}), 404
+
+if __name__ == "__main__":
+    app.run(debug=True)
