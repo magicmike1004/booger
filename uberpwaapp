@@ -1,0 +1,19 @@
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import RiderApp from "./components/RiderApp";
+import DriverApp from "./components/DriverApp";
+import AdminPanel from "./components/AdminPanel";
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/rider" element={<RiderApp />} />
+        <Route path="/driver" element={<DriverApp />} />
+        <Route path="/admin" element={<AdminPanel />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
